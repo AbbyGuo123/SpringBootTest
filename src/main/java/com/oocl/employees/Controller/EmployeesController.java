@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/employees")
 public class EmployeesController {
-//    @Autowired
-//    private EmployeeService employeeService;
+    @Autowired
+    private EmployeeService employeeService;
 
     List<Employee> employees = new ArrayList<>();
     public EmployeesController() {
@@ -29,27 +29,25 @@ public class EmployeesController {
 
     @GetMapping("/{id}")
     public Employee getEmployeesById(@PathVariable int id){
-        Employee employee = employees.stream().filter(e->e.getId()==id).collect(Collectors.toList()).get(0);
+        Employee employee = employeeService.getEmployeesById(employees,id);
         return employee;
     }
 
     @PostMapping("")
     public List<Employee> addEmployee(@RequestBody Employee employee){
-        employees.add(employee);
+        employeeService.addEmployee(employees,employee);
         return employees;
     }
+
     @DeleteMapping("/{id}")
     public List<Employee> deleteEmployee(@PathVariable int id){
-        Employee employee = employees.stream().filter(e->e.getId()==id).collect(Collectors.toList()).get(0);
-        employees.remove(employee);
+        employeeService.deleteEmployee(employees,id);
         return employees;
     }
 
     @PatchMapping("")
     public List<Employee> modifyEmployee(@RequestBody Employee employee){
-        Employee oldEmployee = employees.stream().filter(e->e.getId()==employee.getId()).collect(Collectors.toList()).get(0);
-        employees.remove(oldEmployee);
-        employees.add(employee);
+        employeeService.modifyEmployee(employees,employee);
         return employees;
     }
 
